@@ -42,7 +42,7 @@ jobs:
       - name: Verify installed browsers
         run: ls -l /home/runner/.cache/ms-playwright/
 
-      - name: Run tests # 중복된 스텝을 하나 삭제했습니다.
+      - name: Run tests
         run: |
           python -m pip install .[dev]
           pytest -q
