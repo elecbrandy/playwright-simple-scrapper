@@ -4,7 +4,7 @@ on:
   push:
     tags:
       - "v*.*.*"
-  workflow_dispatch: {}   # 수동 실행도 가능하게(디버그용)
+  workflow_dispatch: {}
 
 permissions:
   contents: read
@@ -28,13 +28,21 @@ jobs:
           python -m pip install -U pip
           python -m pip install build
 
+      - name: Clear Playwright cache and list contents
+        run: |
+          rm -rf /home/runner/.cache/ms-playwright
+          ls -la /home/runner/.cache/ms-playwright || echo "Cache directory does not exist, which is fine."
+
       - name: Install Playwright browsers (and OS deps)
         run: |
           python -m pip install playwright
           python -m playwright install chromium
           python -m playwright install-deps chromium
 
-      - name: Run tests
+      - name: Verify installed browsers
+        run: ls -l /home/runner/.cache/ms-playwright/
+
+      - name: Run tests # 중복된 스텝을 하나 삭제했습니다.
         run: |
           python -m pip install .[dev]
           pytest -q
