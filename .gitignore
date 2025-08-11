@@ -7,5 +7,6 @@ __pycache__/
 dist/
 build/
 .DS_Store
-.sh
-.txt
+*.sh
+*.txt
+*.log
