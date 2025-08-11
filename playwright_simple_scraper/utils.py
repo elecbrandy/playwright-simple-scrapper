@@ -1,6 +1,9 @@
 import random
 import asyncio
-from typing import List, Optional
+from typing import List, Optional, Tuple
+import urllib.request
+import urllib.robotparser as robotparser
+from urllib.parse import urlparse, urlunparse
 from playwright.async_api import Page
 
 UA_POOL: List[str] = [
@@ -36,8 +39,7 @@ async def simulate_human(page: Page):
     for _ in range(random.randint(1, 3)):
         await page.mouse.wheel(0, random.randint(150, 400))
         await asyncio.sleep(random.uniform(0.5, 1.2))
-    await page.click("body", position={"x": 200, "y": 200})
-    await asyncio.sleep(random.uniform(0.6, 1.5))
+    await asyncio.sleep(random.uniform(0.3, 0.8)) 
 
 async def extract_elements(page: Page, selector: str, attribute: Optional[str]) -> List[str]:
     locator = page.locator(selector)
