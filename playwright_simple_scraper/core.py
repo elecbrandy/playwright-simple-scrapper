@@ -7,7 +7,7 @@ from .model import ScrapeResult
 from playwright.async_api import async_playwright, Browser
 from .browser import launch_chromium
 
-
+# strategies to try in order
 _STRATEGY_PATHS = [
     "playwright_simple_scraper.strategies.stealth",
     "playwright_simple_scraper.strategies.mobile",
