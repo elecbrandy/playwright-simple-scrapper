@@ -8,6 +8,7 @@ async def launch_chromium(
 		extra_args: List[str] = None
 	) -> Browser:
 	is_ci = os.getenv("CI") or os.getenv("GITHUB_ACTIONS")
+	channel = os.getenv("PW_CHANNEL") or None
 	args = [
 		"--no-sandbox",							# disable sandboxing
 		"--disable-setuid-sandbox",				# disable setuid sandbox
@@ -27,7 +28,10 @@ async def launch_chromium(
 	if is_ci:
 		args += ["--single-process"]
 	
-	# Launch the browser!
-	browser = await pw.chromium.launch(headless=headless, args=args)
+    # Launch the browser (채널이 지정되면 Chrome 채널 사용)
+	launch_kwargs = dict(headless=headless, args=args)
+	if channel:
+		launch_kwargs["channel"] = channel
+	browser = await pw.chromium.launch(**launch_kwargs)
 	return browser
 
