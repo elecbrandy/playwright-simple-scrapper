@@ -15,6 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: pypi
 
+    # 잡 전체에 적용되는 환경변수 (테스트 단계만이 아니라 전체)
+    env:
+      PW_CHROMIUM_USE_HEADLESS_SHELL: "0"
+      PLAYWRIGHT_CHROMIUM_USE_HEADLESS_SHELL: "0"
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,20 +38,29 @@ jobs:
         run: |
           python -m pip install ".[dev]"
 
+      # 브라우저와 OS deps 설치 (일반 Chromium만 확실히 설치)
       - name: Install Playwright browsers (and OS deps)
         run: |
           python -m pip install playwright
-          python -m playwright install-deps chromium
-          python -m playwright install-deps chromium-headless-shell || true
-          python -m playwright install chromium chromium-headless-shell
-
-      - name: Verify installed browsers
-        run: |
+          python -m playwright install --with-deps chromium
+          python -m playwright --version
           ls -R /home/runner/.cache/ms-playwright/ || true
 
+      # 간단 스모크: 파이썬에서 실제 Chromium 띄울 수 있는지 확인
+      - name: Smoke check chromium launch
+        run: |
+          python - <<'PY'
+          import asyncio
+          from playwright.async_api import async_playwright
+          async def main():
+              async with async_playwright() as pw:
+                  b = await pw.chromium.launch(headless=True, args=["--no-sandbox"])
+                  print("Chromium OK:", await b.version())
+                  await b.close()
+          asyncio.run(main())
+          PY
+
       - name: Run tests
-        env:
-          PLAYWRIGHT_CHROMIUM_USE_HEADLESS_SHELL: "0"
         run: pytest -q
 
       - name: Build sdist and wheel
