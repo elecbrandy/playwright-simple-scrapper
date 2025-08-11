@@ -58,6 +58,7 @@ filterwarnings = [
   "ignore::DeprecationWarning",
 ]
 
+# 핵심: PyPI가 금지하는 '+local' 버전을 생성하지 않도록 고정
 [tool.setuptools_scm]
 version_scheme = "guess-next-dev"
-local_scheme = "node-and-date"
+local_scheme = "no-local-version"
