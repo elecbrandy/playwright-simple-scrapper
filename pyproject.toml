@@ -1,7 +1,7 @@
 [project]
 name = "playwright-simple-scraper"
-version = "0.1.1"
-description = "A simple Playwright-based scraper that returns List[str]"
+dynamic = ["version"]
+description = "A simple Playwright-based scraper that has simple result (based on List[str])"
 authors = [
     { name = "elecbrandy", email = "elecbrandy@gmail.com" }
 ]
@@ -40,7 +40,7 @@ Repository = "https://github.com/elecbrandy/playwright-simple-scraper"
 Issues = "https://github.com/elecbrandy/playwright-simple-scraper/issues"
 
 [build-system]
-requires = ["setuptools>=61", "wheel"]
+requires = ["setuptools>=61", "wheel", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
@@ -57,3 +57,7 @@ markers = [
 filterwarnings = [
   "ignore::DeprecationWarning",
 ]
+
+[tool.setuptools_scm]
+version_scheme = "guess-next-dev"
+local_scheme = "node-and-date"
