@@ -31,13 +31,13 @@ jobs:
       - name: Install Playwright browsers (and OS deps)
         run: |
           python -m pip install playwright
-          python -m playwright install chromium-headless-shell
-          python -m playwright install-deps chromium-headless-shell
+          python -m playwright install chromium
+          python -m playwright install-deps chromium
 
       - name: Run tests
         run: |
           python -m pip install .[dev]
-          pytest -q              # e2e 포함 (headless=True라 CI에서 동작)
+          pytest -q
 
       - name: Build sdist and wheel
         run: python -m build
